@@ -32,11 +32,19 @@
                                 </transform>
                             </label>
                             
-                            <!-- Slogan -->
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="装下你的每一首歌" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="slogan-label">
+                            <!-- Slogan with increased kerning -->
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="slogan-label">
                                 <rect key="frame" x="96.5" y="508" width="200" height="20"/>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="0.7" colorSpace="custom" customColorSpace="sRGB"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="装下你的每一首歌">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="0.7" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" size="15" name=".AppleSystemUIFont"/>
+                                            <real key="NSKern" value="3"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="tailTruncation" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
