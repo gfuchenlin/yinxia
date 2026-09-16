@@ -16,19 +16,46 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <!-- Full Screen Launch Image -->
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="launch-image">
+                            <!-- Background with gradient + logo -->
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="background-image">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                             </imageView>
+                            
+                            <!-- App Title with 8° rotation -->
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="音匣" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="title-label">
+                                <rect key="frame" x="146.5" y="456" width="100" height="40"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="34"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                                <transform key="transform">
+                                    <rotation key="rotation" angle="0.13962634015954636"/>
+                                </transform>
+                            </label>
+                            
+                            <!-- Slogan -->
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="装下你的每一首歌" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="slogan-label">
+                                <rect key="frame" x="96.5" y="508" width="200" height="20"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="0.7" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.309804" green="0.274510" blue="0.898039" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <!-- Image fills entire screen -->
-                            <constraint firstItem="launch-image" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="image-leading"/>
-                            <constraint firstItem="launch-image" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" id="image-trailing"/>
-                            <constraint firstItem="launch-image" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="image-top"/>
-                            <constraint firstItem="launch-image" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="image-bottom"/>
+                            <!-- Background fills entire screen -->
+                            <constraint firstItem="background-image" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading"/>
+                            <constraint firstItem="background-image" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing"/>
+                            <constraint firstItem="background-image" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top"/>
+                            <constraint firstItem="background-image" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom"/>
+                            
+                            <!-- Title centered with slight offset -->
+                            <constraint firstItem="title-label" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX"/>
+                            <constraint firstItem="title-label" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="70"/>
+                            
+                            <!-- Slogan below title -->
+                            <constraint firstItem="slogan-label" firstAttribute="top" secondItem="title-label" secondAttribute="bottom" constant="12"/>
+                            <constraint firstItem="slogan-label" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -38,6 +65,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchImage" width="390" height="844"/>
+        <image name="LaunchBackground" width="390" height="844"/>
     </resources>
 </document>
