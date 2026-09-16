@@ -42,9 +42,20 @@ iOS 音乐播放器，专为 Navidrome / Subsonic 服务器设计。
 
 - macOS 13.0+
 - Xcode 15.0+
-- XcodeGen（通过 Homebrew 安装）
 
-### 安装步骤
+### 方式一：直接打开（推荐）
+
+项目已包含生成的 `.xcodeproj` 文件，可以直接打开：
+
+```bash
+open YinXia.xcodeproj
+```
+
+在 Xcode 中选择目标设备，然后点击运行（⌘R）。
+
+### 方式二：使用 XcodeGen 重新生成
+
+如果需要从 `project.yml` 重新生成项目：
 
 1. **安装 XcodeGen**
 
@@ -63,10 +74,6 @@ xcodegen generate
 ```bash
 open YinXia.xcodeproj
 ```
-
-4. **构建和运行**
-
-在 Xcode 中选择目标设备，然后点击运行（⌘R）。
 
 ## 项目结构
 

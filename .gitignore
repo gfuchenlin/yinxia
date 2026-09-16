@@ -1,5 +1,6 @@
 # Xcode
-*.xcodeproj
+!YinXia.xcodeproj/
+!YinXia.xcodeproj/**
 *.xcworkspace
 !*.xcworkspace/contents.xcworkspacedata
 *.pbxuser
