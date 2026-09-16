@@ -14,7 +14,7 @@ class AppState: ObservableObject {
     init() {
         self.authService = AuthService()
         self.subsonicAPI = SubsonicAPI()
-        self.playerService = PlayerService()
+        self.playerService = PlayerService.shared
         
         checkLoginStatus()
     }
