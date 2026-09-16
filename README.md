@@ -101,9 +101,19 @@ YinXia/
 │   ├── PlayerService.swift  # 播放器服务（AVPlayer）
 │   ├── MiniPlayerBar.swift  # 迷你播放器栏
 │   └── NowPlayingView.swift # 全屏播放界面
-└── Settings/                # 设置模块
-    └── SettingsView.swift   # 设置界面
+├── Settings/                # 设置模块
+│   └── SettingsView.swift   # 设置界面
+└── Assets.xcassets/         # 资源文件
+    └── AppIcon.appiconset/  # App 图标（Logo 方案 E 最终版）
 ```
+
+### 设计资源
+
+- **App Icon**: Logo 方案 E 最终版
+  - 渐变色：#4F46E5 → #C026D3（蓝紫到品红）
+  - 白色圆角边框
+  - 三条均衡器音柱设计
+  - 1024x1024 主图 + 多尺寸适配（180/120/87/80/60/58/40/29px）
 
 ## 使用说明
 
