@@ -24,6 +24,15 @@
 		A10015 /* NowPlayingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20015 /* NowPlayingView.swift */; };
 		A10016 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20016 /* SettingsView.swift */; };
 		A10017 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A30001 /* Assets.xcassets */; };
+		A10018 /* ServicePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20017 /* ServicePickerView.swift */; };
+		A10019 /* LibraryHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20018 /* LibraryHomeView.swift */; };
+		A10020 /* DetailComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20019 /* DetailComponents.swift */; };
+		A10021 /* ArtistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20020 /* ArtistDetailView.swift */; };
+		A10022 /* AlbumsGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20021 /* AlbumsGridView.swift */; };
+		A10023 /* ArtistsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20022 /* ArtistsListView.swift */; };
+		A10024 /* GenresGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20023 /* GenresGridView.swift */; };
+		A10025 /* AllSongsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20024 /* AllSongsView.swift */; };
+		A10026 /* SettingsHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20025 /* SettingsHomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +55,15 @@
 		A20016 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A30001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A40001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20017 /* ServicePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePickerView.swift; sourceTree = "<group>"; };
+		A20018 /* LibraryHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryHomeView.swift; sourceTree = "<group>"; };
+		A20019 /* DetailComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailComponents.swift; sourceTree = "<group>"; };
+		A20020 /* ArtistDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistDetailView.swift; sourceTree = "<group>"; };
+		A20021 /* AlbumsGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsGridView.swift; sourceTree = "<group>"; };
+		A20022 /* ArtistsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistsListView.swift; sourceTree = "<group>"; };
+		A20023 /* GenresGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresGridView.swift; sourceTree = "<group>"; };
+		A20024 /* AllSongsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllSongsView.swift; sourceTree = "<group>"; };
+		A20025 /* SettingsHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +71,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10018 /* ServicePickerView.swift in Sources */,
+				A10019 /* LibraryHomeView.swift in Sources */,
+				A10020 /* DetailComponents.swift in Sources */,
+				A10021 /* ArtistDetailView.swift in Sources */,
+				A10022 /* AlbumsGridView.swift in Sources */,
+				A10023 /* ArtistsListView.swift in Sources */,
+				A10024 /* GenresGridView.swift in Sources */,
+				A10025 /* AllSongsView.swift in Sources */,
+				A10026 /* SettingsHomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,6 +135,7 @@
 			children = (
 				A20005 /* AuthService.swift */,
 				A20006 /* LoginView.swift */,
+				A20017 /* ServicePickerView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -126,6 +154,13 @@
 			children = (
 				A20009 /* LibraryView.swift */,
 				A20010 /* AlbumDetailView.swift */,
+				A20018 /* LibraryHomeView.swift */,
+				A20019 /* DetailComponents.swift */,
+				A20020 /* ArtistDetailView.swift */,
+				A20021 /* AlbumsGridView.swift */,
+				A20022 /* ArtistsListView.swift */,
+				A20023 /* GenresGridView.swift */,
+				A20024 /* AllSongsView.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -160,6 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				A20016 /* SettingsView.swift */,
+				A20025 /* SettingsHomeView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
