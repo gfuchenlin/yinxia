@@ -9,7 +9,7 @@ struct ContentView: View {
                 MainTabView()
                     .environmentObject(appState)
             } else {
-                LoginView()
+                ServicePickerView()
                     .environmentObject(appState)
             }
         }
@@ -27,19 +27,14 @@ struct MainTabView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView {
-                LibraryView()
-                    .tabItem {
-                        Label("曲库", systemImage: "music.note.list")
-                    }
-                
                 SearchView()
                     .tabItem {
                         Label("搜索", systemImage: "magnifyingglass")
                     }
                 
-                PlaylistView()
+                LibraryView()
                     .tabItem {
-                        Label("歌单", systemImage: "music.note")
+                        Label("曲库", systemImage: "music.note.list")
                     }
                 
                 SettingsView()

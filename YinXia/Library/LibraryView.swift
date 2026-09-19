@@ -1,48 +1,8 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @EnvironmentObject var appState: AppState
-    @StateObject private var viewModel = LibraryViewModel()
-    
     var body: some View {
-        NavigationView {
-            Group {
-                if viewModel.isLoading {
-                    ProgressView()
-                } else if let error = viewModel.errorMessage {
-                    ErrorView(message: error)
-                } else if viewModel.albums.isEmpty {
-                    EmptyView(message: "曲库为空")
-                } else {
-                    albumList
-                }
-            }
-            .navigationTitle("曲库")
-            .navigationBarTitleDisplayMode(.large)
-        }
-        .task {
-            await viewModel.loadAlbums(api: appState.subsonicAPI)
-        }
-        .refreshable {
-            await viewModel.loadAlbums(api: appState.subsonicAPI)
-        }
-    }
-    
-    private var albumList: some View {
-        ScrollView {
-            LazyVGrid(columns: [
-                GridItem(.flexible(), spacing: 12),
-                GridItem(.flexible(), spacing: 12)
-            ], spacing: 12) {
-                ForEach(viewModel.albums) { album in
-                    NavigationLink(destination: AlbumDetailView(albumId: album.id)) {
-                        AlbumGridItem(album: album, api: appState.subsonicAPI)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-            }
-            .padding(12)
-        }
+        LibraryHomeView()
     }
 }
 
