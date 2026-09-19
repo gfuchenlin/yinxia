@@ -47,7 +47,8 @@ struct SearchView: View {
                                 SearchSongRow(song: song, api: appState.subsonicAPI)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
-                                        playerService.playSong(song, api: appState.subsonicAPI)
+                                        // 追加到队列并播放（不替换）
+                                        playerService.appendSong(song, api: appState.subsonicAPI)
                                     }
                             }
                         }

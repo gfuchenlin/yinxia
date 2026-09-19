@@ -164,7 +164,16 @@ struct SettingsHomeView: View {
     }
     
     private func clearCache() {
-        // TODO: 实现清除缓存逻辑
+        // 清除 URL 缓存
+        URLCache.shared.removeAllCachedResponses()
+        
+        // 清除临时文件
+        let tempDirectory = FileManager.default.temporaryDirectory
+        try? FileManager.default.contentsOfDirectory(at: tempDirectory, includingPropertiesForKeys: nil)
+            .forEach { url in
+                try? FileManager.default.removeItem(at: url)
+            }
+        
         cacheSize = "0 MB"
     }
 }
