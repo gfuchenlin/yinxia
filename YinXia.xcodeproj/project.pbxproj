@@ -286,6 +286,15 @@
 				A10014 /* MiniPlayerBar.swift in Sources */,
 				A10015 /* NowPlayingView.swift in Sources */,
 				A10016 /* SettingsView.swift in Sources */,
+				A10018 /* ServicePickerView.swift in Sources */,
+				A10019 /* LibraryHomeView.swift in Sources */,
+				A10020 /* DetailComponents.swift in Sources */,
+				A10021 /* ArtistDetailView.swift in Sources */,
+				A10022 /* AlbumsGridView.swift in Sources */,
+				A10023 /* ArtistsListView.swift in Sources */,
+				A10024 /* GenresGridView.swift in Sources */,
+				A10025 /* AllSongsView.swift in Sources */,
+				A10026 /* SettingsHomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
