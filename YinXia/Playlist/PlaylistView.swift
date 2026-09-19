@@ -74,8 +74,11 @@ struct PlaylistDetailView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var playerService: PlayerService
     @StateObject private var viewModel = PlaylistDetailViewModel()
+    @Environment(\.showMiniPlayer) var showMiniPlayer
     
     let playlistId: String
+    
+    @State private var showSongSheet: Song?
     
     var body: some View {
         Group {
@@ -87,38 +90,73 @@ struct PlaylistDetailView: View {
                 playlistDetail(playlist)
             }
         }
+        .toolbar(.hidden, for: .tabBar)  // 隐藏 tab bar
+        .navigationTitle(viewModel.playlist?.name ?? "歌单")
+        .navigationBarTitleDisplayMode(.inline)
         .task {
             await viewModel.loadPlaylist(id: playlistId, api: appState.subsonicAPI)
         }
-        .navigationTitle(viewModel.playlist?.name ?? "歌单")
-        .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $showSongSheet) { song in
+            SongActionSheet(
+                song: song,
+                coverArt: viewModel.playlist?.coverArt,
+                api: appState.subsonicAPI
+            )
+        }
+        .onAppear {
+            // 隐藏 mini player
+            showMiniPlayer.wrappedValue = false
+        }
+        .onDisappear {
+            // 恢复 mini player
+            showMiniPlayer.wrappedValue = true
+        }
     }
     
     private func playlistDetail(_ playlist: PlaylistDetail) -> some View {
-        VStack(spacing: 0) {
-            Button(action: {
-                playerService.playAlbum(playlist.entry, api: appState.subsonicAPI)
-            }) {
-                Text("播放全部")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 48)
-                    .background(Color.accentColor)
-                    .cornerRadius(12)
-            }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 12)
-            
-            List(Array(playlist.entry.enumerated()), id: \.element.id) { index, song in
-                SongRow(song: song, index: index + 1)
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        playerService.playAlbum(playlist.entry, api: appState.subsonicAPI, startIndex: index)
+        ScrollView {
+            VStack(spacing: 0) {
+                // 头图区（使用 DetailHeaderView）
+                DetailHeaderView(
+                    coverArt: playlist.coverArt ?? playlist.id,
+                    title: playlist.name,
+                    subtitle: buildSubtitle(playlist),
+                    trackCount: playlist.songCount,
+                    api: appState.subsonicAPI,
+                    onPlayAll: {
+                        // 追加整表到队列并播放第一首
+                        playerService.appendAndPlayList(playlist.entry, api: appState.subsonicAPI)
                     }
+                )
+                
+                Divider()
+                    .padding(.vertical, 8)
+                
+                // 曲目列表
+                LazyVStack(spacing: 0) {
+                    ForEach(Array(playlist.entry.enumerated()), id: \.element.id) { index, song in
+                        TrackRowView(
+                            index: index + 1,
+                            song: song,
+                            showAlbum: true,  // 歌单页显示专辑名
+                            onTap: {
+                                // 追加该曲并播放
+                                playerService.appendSong(song, api: appState.subsonicAPI)
+                            },
+                            onMore: {
+                                showSongSheet = song
+                            }
+                        )
+                    }
+                }
             }
-            .listStyle(.plain)
         }
+    }
+    
+    private func buildSubtitle(_ playlist: PlaylistDetail) -> String {
+        // 根据 DETAIL-SPEC：普通歌单显示「服务器歌单」或「N 首」
+        // 这里简化为「服务器歌单」
+        return "服务器歌单"
     }
 }
 

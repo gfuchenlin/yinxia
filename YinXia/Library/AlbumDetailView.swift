@@ -5,6 +5,7 @@ struct AlbumDetailView: View {
     @EnvironmentObject var playerService: PlayerService
     @StateObject private var viewModel = AlbumDetailViewModel()
     @Environment(\.dismiss) var dismiss
+    @Environment(\.showMiniPlayer) var showMiniPlayer
     
     let albumId: String
     
@@ -31,6 +32,14 @@ struct AlbumDetailView: View {
                 coverArt: viewModel.album?.coverArt ?? viewModel.album?.id,
                 api: appState.subsonicAPI
             )
+        }
+        .onAppear {
+            // 隐藏 mini player
+            showMiniPlayer.wrappedValue = false
+        }
+        .onDisappear {
+            // 恢复 mini player
+            showMiniPlayer.wrappedValue = true
         }
     }
     
