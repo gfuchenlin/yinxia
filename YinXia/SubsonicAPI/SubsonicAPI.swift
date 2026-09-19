@@ -130,6 +130,77 @@ class SubsonicAPI {
         return playlist
     }
     
+    func getArtists() async throws -> [Artist] {
+        guard let credentials = credentials else {
+            throw SubsonicError.authenticationFailed
+        }
+        
+        let params = createAuthParams(credentials: credentials)
+        let url = try createURL(endpoint: "getArtists", params: params, credentials: credentials)
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        try validateResponse(data)
+        
+        let response = try JSONDecoder().decode(SubsonicResponse<ArtistsResponse>.self, from: data)
+        
+        // 展平所有索引中的歌手
+        var allArtists: [Artist] = []
+        if let indices = response.subsonicResponse.artists?.index {
+            for index in indices {
+                allArtists.append(contentsOf: index.artist)
+            }
+        }
+        return allArtists
+    }
+    
+    func getGenres() async throws -> [Genre] {
+        guard let credentials = credentials else {
+            throw SubsonicError.authenticationFailed
+        }
+        
+        let params = createAuthParams(credentials: credentials)
+        let url = try createURL(endpoint: "getGenres", params: params, credentials: credentials)
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        try validateResponse(data)
+        
+        let response = try JSONDecoder().decode(SubsonicResponse<GenresResponse>.self, from: data)
+        return response.subsonicResponse.genres?.genre ?? []
+    }
+    
+    func getStarred2() async throws -> Starred2 {
+        guard let credentials = credentials else {
+            throw SubsonicError.authenticationFailed
+        }
+        
+        let params = createAuthParams(credentials: credentials)
+        let url = try createURL(endpoint: "getStarred2", params: params, credentials: credentials)
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        try validateResponse(data)
+        
+        let response = try JSONDecoder().decode(SubsonicResponse<Starred2Response>.self, from: data)
+        return response.subsonicResponse.starred2 ?? Starred2(artist: nil, album: nil, song: nil)
+    }
+    
+    func getSongsByGenre(genre: String, size: Int = 500) async throws -> [Song] {
+        guard let credentials = credentials else {
+            throw SubsonicError.authenticationFailed
+        }
+        
+        var params = createAuthParams(credentials: credentials)
+        params["genre"] = genre
+        params["count"] = "\(size)"
+        
+        let url = try createURL(endpoint: "getSongsByGenre", params: params, credentials: credentials)
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        try validateResponse(data)
+        
+        let response = try JSONDecoder().decode(SubsonicResponse<SongsByGenreResponse>.self, from: data)
+        return response.subsonicResponse.songsByGenre?.song ?? []
+    }
+    
     func getStreamURL(id: String) -> String? {
         guard let credentials = credentials else { return nil }
         

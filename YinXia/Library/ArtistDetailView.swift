@@ -207,8 +207,29 @@ class ArtistDetailViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         
-        // TODO: 实现真实的歌手数据加载
-        // 这里使用占位数据
+        do {
+            // 加载歌手的专辑
+            let allAlbums = try await api.getAlbums(type: "alphabeticalByName", size: 500)
+            albums = allAlbums.filter { $0.artistId == id }
+            
+            // 加载歌手的所有歌曲（从专辑中提取）
+            var allSongs: [Song] = []
+            for album in albums {
+                do {
+                    let albumDetail = try await api.getAlbum(id: album.id)
+                    allSongs.append(contentsOf: albumDetail.song)
+                } catch {
+                    continue
+                }
+            }
+            songs = allSongs
+        } catch SubsonicError.networkUnavailable {
+            errorMessage = "网络不可用"
+        } catch SubsonicError.connectionFailed {
+            errorMessage = "无法连接"
+        } catch {
+            errorMessage = "加载失败"
+        }
         
         isLoading = false
     }

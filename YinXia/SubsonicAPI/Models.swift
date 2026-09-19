@@ -100,6 +100,54 @@ struct Artist: Codable, Identifiable {
     let name: String
     let albumCount: Int?
     let coverArt: String?
+    let artistImageUrl: String?
+}
+
+struct ArtistsResponse: Codable {
+    let artists: ArtistsIndex?
+}
+
+struct ArtistsIndex: Codable {
+    let index: [ArtistIndex]
+}
+
+struct ArtistIndex: Codable {
+    let name: String
+    let artist: [Artist]
+}
+
+struct GenresResponse: Codable {
+    let genres: GenresList?
+}
+
+struct GenresList: Codable {
+    let genre: [Genre]
+}
+
+struct Genre: Codable, Identifiable {
+    let value: String
+    let songCount: Int?
+    let albumCount: Int?
+    
+    var id: String { value }
+}
+
+struct Starred2Response: Codable {
+    let starred2: Starred2?
+}
+
+struct Starred2: Codable {
+    let artist: [Artist]?
+    let album: [Album]?
+    let song: [Song]?
+}
+
+struct SongsByGenreResponse: Codable {
+    let songsByGenre: SongsByGenre?
+}
+
+struct SongsByGenre: Codable {
+    let song: [Song]
 }
 
 struct PlaylistsResponse: Codable {

@@ -42,13 +42,13 @@ struct LibraryHomeView: View {
                         LibraryGridItem(
                             title: "流派",
                             icon: "guitars",
-                            destination: AnyView(GenresView())
+                            destination: AnyView(GenresGridView())
                         )
                         
                         LibraryGridItem(
                             title: "歌手",
                             icon: "person.2",
-                            destination: AnyView(ArtistsView())
+                            destination: AnyView(ArtistsListView())
                         )
                     }
                     .padding(.horizontal, 12)
@@ -105,21 +105,7 @@ struct LibraryGridItem: View {
     }
 }
 
-// 占位视图
-struct AllSongsView: View {
-    var body: some View {
-        Text("全部歌曲")
-            .navigationTitle("歌曲")
-    }
-}
-
-struct FavoritesView: View {
-    var body: some View {
-        Text("我喜欢的")
-            .navigationTitle("我喜欢的")
-    }
-}
-
+// 本地音乐占位
 struct LocalMusicView: View {
     var body: some View {
         VStack(spacing: 16) {
@@ -128,39 +114,88 @@ struct LocalMusicView: View {
             
             Text("占用 0 MB")
                 .foregroundColor(.secondary)
+            
+            Text("本地导入功能待实现")
+                .font(.caption)
+                .foregroundColor(.secondary)
         }
         .navigationTitle("本地音乐")
     }
 }
 
-struct AlbumsGridView: View {
-    var body: some View {
-        Text("专辑网格")
-            .navigationTitle("专辑")
-    }
-}
-
-struct GenresView: View {
-    var body: some View {
-        Text("流派")
-            .navigationTitle("流派")
-    }
-}
-
-struct ArtistsView: View {
-    var body: some View {
-        Text("歌手")
-            .navigationTitle("歌手")
-    }
-}
-
+// 我的歌单列表
 struct PlaylistsListView: View {
+    @EnvironmentObject var appState: AppState
+    @StateObject private var viewModel = PlaylistsViewModel()
+    
     var body: some View {
-        VStack {
-            Text("歌单列表")
-                .foregroundColor(.secondary)
+        VStack(spacing: 8) {
+            if viewModel.isLoading {
+                ProgressView()
+                    .frame(height: 100)
+            } else if viewModel.playlists.isEmpty {
+                Text("暂无歌单")
+                    .foregroundColor(.secondary)
+                    .frame(height: 100)
+            } else {
+                ForEach(viewModel.playlists.prefix(3)) { playlist in
+                    NavigationLink(destination: PlaylistDetailView(playlistId: playlist.id)) {
+                        HStack(spacing: 12) {
+                            AsyncImage(url: URL(string: appState.subsonicAPI.getCoverArtURL(id: playlist.coverArt ?? playlist.id, size: 200) ?? "")) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            } placeholder: {
+                                Color.gray.opacity(0.3)
+                            }
+                            .frame(width: 50, height: 50)
+                            .cornerRadius(6)
+                            
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(playlist.name)
+                                    .font(.system(size: 15, weight: .medium))
+                                    .foregroundColor(.primary)
+                                    .lineLimit(1)
+                                
+                                Text("\(playlist.songCount) 首歌曲")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(.secondary)
+                            }
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 14))
+                                .foregroundColor(.secondary)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
+            }
         }
-        .frame(height: 100)
+        .task {
+            await viewModel.loadPlaylists(api: appState.subsonicAPI)
+        }
+    }
+}
+
+@MainActor
+class PlaylistsViewModel: ObservableObject {
+    @Published var playlists: [Playlist] = []
+    @Published var isLoading = false
+    
+    func loadPlaylists(api: SubsonicAPI) async {
+        isLoading = true
+        
+        do {
+            playlists = try await api.getPlaylists()
+        } catch {
+            playlists = []
+        }
+        
+        isLoading = false
     }
 }
 
