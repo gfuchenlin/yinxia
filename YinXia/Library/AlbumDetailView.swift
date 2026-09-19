@@ -4,8 +4,11 @@ struct AlbumDetailView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var playerService: PlayerService
     @StateObject private var viewModel = AlbumDetailViewModel()
+    @Environment(\.dismiss) var dismiss
     
     let albumId: String
+    
+    @State private var showSongSheet: Song?
     
     var body: some View {
         Group {
@@ -17,70 +20,74 @@ struct AlbumDetailView: View {
                 albumDetail(album)
             }
         }
+        .toolbar(.hidden, for: .tabBar)  // 隐藏 tab bar
+        .navigationBarTitleDisplayMode(.inline)
         .task {
             await viewModel.loadAlbum(id: albumId, api: appState.subsonicAPI)
+        }
+        .sheet(item: $showSongSheet) { song in
+            SongActionSheet(
+                song: song,
+                coverArt: viewModel.album?.coverArt ?? viewModel.album?.id,
+                api: appState.subsonicAPI
+            )
         }
     }
     
     private func albumDetail(_ album: AlbumDetail) -> some View {
         ScrollView {
             VStack(spacing: 0) {
-                AsyncImage(url: URL(string: appState.subsonicAPI.getCoverArtURL(id: album.coverArt ?? album.id, size: 600) ?? "")) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Color.gray.opacity(0.3)
-                }
-                .frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.width - 40)
-                .cornerRadius(12)
-                .padding(.top, 20)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(album.name)
-                        .font(.system(size: 22, weight: .semibold))
-                        .multilineTextAlignment(.leading)
-                    
-                    Text(album.artist ?? "未知艺术家")
-                        .font(.system(size: 15))
-                        .foregroundColor(.secondary)
-                    
-                    if let year = album.year {
-                        Text("\(year) • \(album.songCount) 首歌曲")
-                            .font(.system(size: 13))
-                            .foregroundColor(.secondary)
+                // 头图区（封面 112pt + 标题 + 全部播放）
+                DetailHeaderView(
+                    coverArt: album.coverArt ?? album.id,
+                    title: album.name,
+                    subtitle: buildSubtitle(album),
+                    trackCount: album.songCount,
+                    api: appState.subsonicAPI,
+                    onPlayAll: {
+                        // 追加整表到队列并播放第一首
+                        playerService.appendAndPlayList(album.song, api: appState.subsonicAPI)
                     }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 16)
+                )
                 
-                Button(action: {
-                    playerService.playAlbum(album.song, api: appState.subsonicAPI)
-                }) {
-                    Text("播放全部")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 48)
-                        .background(Color.accentColor)
-                        .cornerRadius(12)
-                }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 12)
+                Divider()
+                    .padding(.vertical, 8)
                 
+                // 曲目列表
                 LazyVStack(spacing: 0) {
                     ForEach(Array(album.song.enumerated()), id: \.element.id) { index, song in
-                        SongRow(song: song, index: index + 1)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                playerService.playAlbum(album.song, api: appState.subsonicAPI, startIndex: index)
+                        TrackRowView(
+                            index: index + 1,
+                            song: song,
+                            showAlbum: false,  // 专辑页省略专辑名
+                            onTap: {
+                                // 追加该曲并播放
+                                playerService.appendSong(song, api: appState.subsonicAPI)
+                            },
+                            onMore: {
+                                showSongSheet = song
                             }
+                        )
                     }
                 }
             }
         }
-        .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    private func buildSubtitle(_ album: AlbumDetail) -> String {
+        var parts: [String] = []
+        
+        // 年份
+        if let year = album.year {
+            parts.append(String(year))
+        }
+        
+        // 歌手
+        if let artist = album.artist {
+            parts.append(artist)
+        }
+        
+        return parts.joined(separator: " · ")
     }
 }
 

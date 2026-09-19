@@ -133,6 +133,54 @@ class PlayerService: ObservableObject {
         loadAndPlay(song: songs[startIndex])
     }
     
+    // MARK: - Append Queue (CR-003)
+    
+    /// 追加歌曲到队列并播放（如果当前无播放）
+    func appendSong(_ song: Song, api: SubsonicAPI, playImmediately: Bool = true) {
+        self.api = api
+        
+        if queue.isEmpty || currentTrack == nil {
+            // 队列为空，直接播放
+            self.queue = [song]
+            self.currentIndex = 0
+            self.currentTrack = song
+            loadAndPlay(song: song)
+        } else {
+            // 追加到队列
+            queue.append(song)
+            
+            if playImmediately {
+                // 立即播放新追加的歌曲
+                currentIndex = queue.count - 1
+                currentTrack = song
+                loadAndPlay(song: song)
+            }
+        }
+    }
+    
+    /// 追加整个列表到队列并播放第一首
+    func appendAndPlayList(_ songs: [Song], api: SubsonicAPI) {
+        guard !songs.isEmpty else { return }
+        self.api = api
+        
+        if queue.isEmpty || currentTrack == nil {
+            // 队列为空，直接设置为新队列
+            self.queue = songs
+            self.currentIndex = 0
+            self.currentTrack = songs[0]
+            loadAndPlay(song: songs[0])
+        } else {
+            // 追加到现有队列
+            let insertIndex = queue.count
+            queue.append(contentsOf: songs)
+            
+            // 播放追加列表的第一首
+            currentIndex = insertIndex
+            currentTrack = songs[0]
+            loadAndPlay(song: songs[0])
+        }
+    }
+    
     private func loadAndPlay(song: Song) {
         guard let api = api,
               let urlString = api.getStreamURL(id: song.id),
