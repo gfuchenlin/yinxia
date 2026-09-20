@@ -180,6 +180,11 @@ YinXia/
 
 此项目为个人学习项目。
 
+## Cursor / 后续开发交接
+
+详细现状、设计盖章、编译坑与待办见根目录 **[CURSOR-HANDOFF.md](./CURSOR-HANDOFF.md)**。  
+当前开发分支：`cursor/yinxia-mvp-a794`（PR #1）。
+
 ## 贡献
 
 欢迎提交 Issue 和 Pull Request。
